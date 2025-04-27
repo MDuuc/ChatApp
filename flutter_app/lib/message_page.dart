@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/core/theme.dart';
 
 class MessagePage extends StatelessWidget {
   const MessagePage({super.key});
@@ -48,8 +49,17 @@ class MessagePage extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 10,),
           Expanded(
             child: Container(
+              decoration: BoxDecoration(
+                color:  DefaultColors.messageListPage,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+
+                )
+              ),
               child: ListView(
                 scrollDirection: Axis.vertical,
                   children: [
