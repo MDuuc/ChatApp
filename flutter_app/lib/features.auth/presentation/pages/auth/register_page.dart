@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/core/theme.dart';
 import 'package:flutter_app/features.auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_app/features.auth/presentation/bloc/auth_event.dart';
 import 'package:flutter_app/features.auth/presentation/bloc/auth_state.dart';

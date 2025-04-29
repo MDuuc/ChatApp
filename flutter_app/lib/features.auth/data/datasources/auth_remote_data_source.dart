@@ -16,7 +16,9 @@ Future<UserModel> login({required String email, required String password}) async
   // print(response.statusCode);
     if (response.statusCode == 200) {
    final json = jsonDecode(response.body);
-        return UserModel.fromJson(json['user']);
+        final user = UserModel.fromJson(json['user']);
+        await user.saveToken();
+        return user;
 } else {
   throw Exception('Failed to login. Status code: ${response.statusCode}');
 }

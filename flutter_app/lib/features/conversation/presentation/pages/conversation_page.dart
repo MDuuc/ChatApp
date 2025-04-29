@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme.dart';
+import 'package:flutter_app/features/conversation/presentation/bloc/conversations_bloc.dart';
+import 'package:flutter_app/features/conversation/presentation/bloc/conversations_event.dart';
+import 'package:flutter_app/features/conversation/presentation/bloc/conversations_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
-class MessagePage extends StatelessWidget {
-  const MessagePage({super.key});
+class ConversationPage extends StatefulWidget {
+  const ConversationPage({super.key});
+
+  @override
+  State<ConversationPage> createState() => _ConversationPageState();
+}
+
+class _ConversationPageState extends State<ConversationPage> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<ConversationsBloc>(context).add(FetchConversations()); 
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -60,15 +78,29 @@ class MessagePage extends StatelessWidget {
 
                 )
               ),
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                  children: [
-                    _buildMessageTitle("Kious", "Hiloo", '20:10'),
-                    _buildMessageTitle("Kious", "Hiloo", '20:10'),
-                    _buildMessageTitle("Kious", "Hiloo", '20:10'),
-                    _buildMessageTitle("Kious", "Hiloo", '20:10'),
-                    _buildMessageTitle("Kious", "Hiloo", '20:10'),
-                  ],
+              child: BlocBuilder<ConversationsBloc, ConversationsState>(
+                builder: (context, state){
+                  if (state is ConversationsLoading){
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+                  else if (state is ConversationsLoaded){
+                    return  ListView.builder(
+                      itemCount: state.conversations.length,
+                      itemBuilder: (context, index){
+                        final conversation = state.conversations[index];
+                        return _buildMessageTitle(
+                          conversation.participantName, 
+                          conversation.lastMessage,
+                          conversation.lastMessageTime
+                           );
+                      },
+                );
+                  }
+                  else if (state is ConversationsError) { 
+                    return Center(child: Text(state.message),);
+                  }
+                  return Center(child: Text("No Conversation found"),);
+                },
               ),
             )
             )
@@ -93,7 +125,7 @@ class MessagePage extends StatelessWidget {
     ),
     );
   }
-  Widget _buildMessageTitle(String name, String message, String time){
+  Widget _buildMessageTitle(String name, String message, DateTime time){
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       leading: CircleAvatar(
@@ -110,7 +142,7 @@ class MessagePage extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
     ),
     trailing: Text(
-      time,
+      DateFormat('HH:mm').format(time),
       style: TextStyle(color: Colors.grey),
     ),
     );
