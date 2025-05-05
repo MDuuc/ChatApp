@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/core/theme.dart';
+import 'package:flutter_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:flutter_app/features/conversation/presentation/bloc/conversations_bloc.dart';
 import 'package:flutter_app/features/conversation/presentation/bloc/conversations_event.dart';
 import 'package:flutter_app/features/conversation/presentation/bloc/conversations_state.dart';
@@ -17,7 +18,6 @@ class _ConversationPageState extends State<ConversationPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BlocProvider.of<ConversationsBloc>(context).add(FetchConversations()); 
     }
@@ -88,11 +88,17 @@ class _ConversationPageState extends State<ConversationPage> {
                       itemCount: state.conversations.length,
                       itemBuilder: (context, index){
                         final conversation = state.conversations[index];
-                        return _buildMessageTitle(
-                          conversation.participantName, 
-                          conversation.lastMessage,
-                          conversation.lastMessageTime
-                           );
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                            ChatPage(conversationId: conversation.id, mate: conversation.participantName)));
+                          },
+                          child: _buildMessageTitle(
+                            conversation.participantName, 
+                            conversation.lastMessage,
+                            conversation.lastMessageTime
+                             ),
+                        );
                       },
                 );
                   }
