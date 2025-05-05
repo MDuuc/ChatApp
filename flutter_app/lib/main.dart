@@ -13,6 +13,12 @@ import 'package:flutter_app/features/auth/domain/usecases/register_use_case.dart
 import 'package:flutter_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_app/features/auth/presentation/pages/auth/login_page.dart';
 import 'package:flutter_app/features/auth/presentation/pages/auth/register_page.dart';
+import 'package:flutter_app/features/contacts/data/datasources/contacts_remote_data_source.dart';
+import 'package:flutter_app/features/contacts/data/repositories/contacts_repository_impl.dart';
+import 'package:flutter_app/features/contacts/domain/usecases/add_contacts_use_case.dart';
+import 'package:flutter_app/features/contacts/domain/usecases/fetch_contacts_use_case.dart';
+import 'package:flutter_app/features/contacts/presentation/bloc/contacts_bloc.dart';
+import 'package:flutter_app/features/contacts/presentation/pages/contacts_page.dart';
 import 'package:flutter_app/features/conversation/data/datasources/conversation_remote_data_source.dart';
 import 'package:flutter_app/features/conversation/data/repositories/conversations_repository_impl.dart';
 import 'package:flutter_app/features/conversation/domain/usecases/fetch_conversation_use_case.dart';
@@ -27,17 +33,21 @@ void main() async{
   final authRepositoryImpl = AuthRepositoryImpl(authRemoteDataSource: AuthRemoteDataSource());
   final conversationsRepositoryImpl = ConversationsRepositoryImpl(remoteDataSource: ConversationsRemoteDataSource(),);
   final messagesRepository = MessagesRepositoryImpl(remoteDataSource: MessagesRemoteDataSource());
+  final contactsRepository = ContactsRepositoryImpl(remoteDataSource: ContactsRemoteDataSource());
 
-  runApp( MyApp(authRepositoryImpl: authRepositoryImpl, conversationsRepositoryImpl: conversationsRepositoryImpl, messagesRepository: messagesRepository,));
+
+  runApp( MyApp(authRepositoryImpl: authRepositoryImpl, conversationsRepositoryImpl: conversationsRepositoryImpl, messagesRepository: messagesRepository, contactsRepository: contactsRepository,));
 }
 
 class MyApp extends StatelessWidget {
   final AuthRepositoryImpl authRepositoryImpl;
   final ConversationsRepositoryImpl conversationsRepositoryImpl;
   final MessagesRepositoryImpl messagesRepository;
+  final ContactsRepositoryImpl contactsRepository;
 
 
-  const MyApp({super.key, required this.authRepositoryImpl, required this.conversationsRepositoryImpl, required this.messagesRepository});
+
+  const MyApp({super.key, required this.authRepositoryImpl, required this.conversationsRepositoryImpl, required this.messagesRepository, required this.contactsRepository});
 
   // This widget is the root of your application.
   @override
@@ -54,6 +64,10 @@ class MyApp extends StatelessWidget {
 
         BlocProvider(
          create: (_) => ChatBloc(fetchMessagesUseCase: FetchMessagesUseCase(messagesRepository: messagesRepository))
+        ),
+
+      BlocProvider(
+         create: (_) => ContactsBloc(fetchContactsUseCase: FetchContactsUseCase(contactsRepository: contactsRepository), addContactUseCase: AddContactsUseCase(contactsRepository: contactsRepository) )
         )
       ],
       child: MaterialApp(
@@ -65,6 +79,7 @@ class MyApp extends StatelessWidget {
           '/login': (_) => LoginPage(),
           '/register': (_) => RegisterPage(),
           '/conversationPage': (_) => ConversationPage(),
+          '/contactsPage': (_) => ContactsPage(),
         },
       ),
     );

@@ -23,6 +23,27 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       primaryColor: Colors.white,
+      iconTheme: const IconThemeData(color: Colors.white),
+      appBarTheme: const AppBarTheme(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: DefaultColors.buttonColor,
+        foregroundColor: Colors.white,
+      ),
+        textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black,
+              ),
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: DefaultColors.buttonColor,
+                foregroundColor: Colors.white,
+              ),
+            ),
       scaffoldBackgroundColor: Color(0xFFE1B202D),
       
       textTheme: TextTheme(

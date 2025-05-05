@@ -112,6 +112,13 @@ class _ConversationPageState extends State<ConversationPage> {
             )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.pushNamed(context, "/contactsPage");
+        },
+        backgroundColor: DefaultColors.buttonColor,
+        child: Icon(Icons.contacts, color: Colors.white,),
+        ),
     );
   }
   Widget _buildRecentContact(BuildContext context, String name){
