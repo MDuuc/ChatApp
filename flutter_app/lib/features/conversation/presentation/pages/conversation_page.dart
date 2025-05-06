@@ -93,11 +93,14 @@ class _ConversationPageState extends State<ConversationPage> {
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>
                             ChatPage(conversationId: conversation.id, mate: conversation.participantName)));
                           },
-                          child: _buildMessageTitle(
-                            conversation.participantName, 
-                            conversation.lastMessage,
-                            conversation.lastMessageTime
-                             ),
+                          child: conversation.lastMessage != null 
+                              ? _buildMessageTitle(
+                                  conversation.participantName,
+                                  conversation.lastMessage as String,
+                                  conversation.lastMessageTime as DateTime,
+                                )
+                              : Container(), 
+
                         );
                       },
                 );

@@ -4,7 +4,6 @@ import 'package:flutter_app/features/chat/data/datasources/message_remote_data_s
 import 'package:flutter_app/features/chat/data/repositories/message_repository_impl.dart';
 import 'package:flutter_app/features/chat/domain/usecases/fetch_message_use_case.dart';
 import 'package:flutter_app/features/chat/presentation/bloc/chat_bloc.dart';
-import 'package:flutter_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:flutter_app/core/theme.dart';
 import 'package:flutter_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:flutter_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -21,6 +20,7 @@ import 'package:flutter_app/features/contacts/presentation/bloc/contacts_bloc.da
 import 'package:flutter_app/features/contacts/presentation/pages/contacts_page.dart';
 import 'package:flutter_app/features/conversation/data/datasources/conversation_remote_data_source.dart';
 import 'package:flutter_app/features/conversation/data/repositories/conversations_repository_impl.dart';
+import 'package:flutter_app/features/contacts/domain/usecases/check_or_create_conversation_use_case.dart';
 import 'package:flutter_app/features/conversation/domain/usecases/fetch_conversation_use_case.dart';
 import 'package:flutter_app/features/conversation/presentation/bloc/conversations_bloc.dart';
 import 'package:flutter_app/features/conversation/presentation/pages/conversation_page.dart';
@@ -67,7 +67,10 @@ class MyApp extends StatelessWidget {
         ),
 
       BlocProvider(
-         create: (_) => ContactsBloc(fetchContactsUseCase: FetchContactsUseCase(contactsRepository: contactsRepository), addContactUseCase: AddContactsUseCase(contactsRepository: contactsRepository) )
+         create: (_) => ContactsBloc(
+          fetchContactsUseCase: FetchContactsUseCase(contactsRepository: contactsRepository), 
+          addContactUseCase: AddContactsUseCase(contactsRepository: contactsRepository), 
+          checkOrCreateConversationUseCase:  CheckOrCreateConversationUseCase(conversationsRepository: conversationsRepositoryImpl))
         )
       ],
       child: MaterialApp(

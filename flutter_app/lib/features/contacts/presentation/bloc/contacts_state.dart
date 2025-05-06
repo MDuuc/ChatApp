@@ -20,3 +20,10 @@ class ContactsError extends ContactsState {
 }
 
 class ContactAdded extends ContactsState {}
+
+class ConversationReady extends ContactsState {
+  final String conversationId;
+  final String contactName;
+
+  ConversationReady(this.conversationId, this.contactName);
+}

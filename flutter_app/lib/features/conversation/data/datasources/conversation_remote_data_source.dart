@@ -29,4 +29,22 @@ Future<List<ConversationModel>> fetchConversations() async {
   throw Exception('Failed to fetch conversations. Status code: ${response.statusCode}');
 }
 
+Future <String> checkOrCreateConversation (String contactId) async{
+  String? token = await storage.read(key: 'token');
+  final response = await http.post(
+  Uri.parse('${baseUrl}/conversations/check-or-create'),
+  body: jsonEncode({'contactId': contactId}),
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
+  },
+);
+
+if (response.statusCode == 200) {
+  var data = jsonDecode(response.body);
+  return data['conversationId'];
+} else {
+  throw Exception('Failed to check or create conversations');
+}
+}
 }
